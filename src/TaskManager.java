@@ -1,5 +1,5 @@
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TaskManager {
     private int taskID;
@@ -17,6 +17,10 @@ public class TaskManager {
     public void addTask(String title, String description) {
         Task task = new Task(title, description, ++this.taskID);
         tasks.put(taskID, task);
+    }
+
+    public ArrayList<Task> getTasks() {
+        return (ArrayList<Task>) tasks.values();
     }
 
     public String tasksToString() {
@@ -44,6 +48,10 @@ public class TaskManager {
         return epics.get(epics.keySet().toArray()[epics.size() - 1]);
     }
 
+    public ArrayList<Epic> getEpics() {
+        return (ArrayList<Epic>) epics.values();
+    }
+
     public void addSubtask(String title, String description, Epic epic) {
         if (epic != null) {
             Subtask subtask = new Subtask(title, description, ++this.taskID, epic);
@@ -61,4 +69,17 @@ public class TaskManager {
         }
         return result;
     }
+
+    public ArrayList<Subtask> getSubtasks() {
+        return (ArrayList<Subtask>) subtasks.values();
+    }
+
+    public void clear() {
+        this.tasks = new HashMap<>();
+        this.epics = new HashMap<>();
+        this.subtasks = new HashMap<>();
+        this.taskID = 0;
+    }
+
+
 }
