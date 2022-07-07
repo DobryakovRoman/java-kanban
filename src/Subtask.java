@@ -1,7 +1,8 @@
 public class Subtask extends Task {
     private Epic epic;
 
-    public Subtask(Epic epic) {
+    public Subtask(String title, String description, int taskID, Epic epic) {
+        super(title, description, taskID);
         this.epic = epic;
     }
 
@@ -11,5 +12,10 @@ public class Subtask extends Task {
 
     public void setEpic(Epic epic) {
         this.epic = epic;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

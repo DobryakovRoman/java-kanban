@@ -1,8 +1,24 @@
 public class Task {
     private String title;
     private String description;
-    private int UID;
+    private int taskID;
     private String status;
+
+    public Task() {
+        this.title = "";
+        this.description = "";
+        this.taskID = 0;
+        this.status = "NEW";
+    }
+
+    public Task(String title, String description, int taskID) {
+        this.title = title;
+        this.description = description;
+        this.taskID = taskID;
+        this.status = "NEW";
+    }
+
+
 
     public String getTitle() {
         return title;
@@ -20,12 +36,12 @@ public class Task {
         this.description = description;
     }
 
-    public int getUID() {
-        return UID;
+    public int getTaskID() {
+        return taskID;
     }
 
-    public void setUID(int UID) {
-        this.UID = UID;
+    public void setTaskID(int taskID) {
+        this.taskID = taskID;
     }
 
     public String getStatus() {
@@ -34,5 +50,15 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", taskID=" + taskID +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
