@@ -1,8 +1,8 @@
 public class Task {
-    private String title;
-    private String description;
-    private int taskID;
-    private String status;
+    protected String title;
+    protected String description;
+    protected int taskID;
+    protected String status;
 
     public Task() {
         this.title = "";
@@ -11,10 +11,9 @@ public class Task {
         this.status = "NEW";
     }
 
-    public Task(String title, String description, int taskID) {
+    public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.taskID = taskID;
         this.status = "NEW";
     }
 

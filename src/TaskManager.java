@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class TaskManager {
     private int taskID;
@@ -14,9 +16,9 @@ public class TaskManager {
         this.taskID = 0;
     }
 
-    public void addTask(String title, String description) {
-        Task task = new Task(title, description, ++this.taskID);
-        tasks.put(taskID, task);
+    public void addTask(Task task) {
+        task.setTaskID(++this.taskID);
+        tasks.put(task.getTaskID(), task);
     }
 
     public ArrayList<Task> getTasks() {
@@ -31,8 +33,8 @@ public class TaskManager {
         return result;
     }
 
-    public void addEpic(String title, String description) {
-        Epic epic = new Epic(title, description, ++this.taskID);
+    public void addEpic(Epic epic) {
+        epic.setTaskID(++this.taskID);
         epics.put(this.taskID, epic);
     }
 
@@ -48,8 +50,9 @@ public class TaskManager {
         return epics.get(epics.keySet().toArray()[epics.size() - 1]);
     }
 
-    public ArrayList<Epic> getEpics() {
-        return (ArrayList<Epic>) epics.values();
+    public List<Epic> getEpics() {
+        Collection<Epic> values = epics.values();
+        return new ArrayList<>(values);
     }
 
     public void addSubtask(String title, String description, Epic epic) {
