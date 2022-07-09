@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TaskManager {
     private int taskID;
@@ -62,10 +59,6 @@ public class TaskManager {
         return result;
     }
 
-    /*public Epic getLastCreatedEpic() {
-        return epics.get(epics.keySet().toArray()[epics.size() - 1]);
-    }*/
-
     public List<Epic> getEpics() {
         Collection<Epic> values = epics.values();
         return new ArrayList<>(values);
@@ -85,6 +78,7 @@ public class TaskManager {
         } else {
             System.out.println("ID Эпика отсутствует. Эпик не обновлён");
         }
+        updateEpicStatus(epic);
     }
 
     public void removeEpic(int ID) {
@@ -93,6 +87,11 @@ public class TaskManager {
             subtasks.remove(subtask.getTaskID());
         }
         epics.remove(ID);
+    }
+
+    public ArrayList<Subtask> getEpicsSubtasks(int epicID) {
+        ArrayList<Subtask> subtasks = this.epics.get(epicID).getSubtasks();
+        return subtasks;
     }
 
     public void addSubtask(Subtask subtask) {
@@ -124,6 +123,7 @@ public class TaskManager {
         if (subtasks.replace(ID, subtask) == null) {
             System.out.println("ID Подзадачи отсутствует. Подзадача не обновлёна.");
         }
+        subtask.getEpic().addSubtask(subtask);
         updateEpicStatus(subtask.getEpic());
     }
 
@@ -142,9 +142,18 @@ public class TaskManager {
         boolean statusProgress = false;
         boolean statusDone = false;
         for (Subtask subtask : epic.getSubtasks()) {
-            statusNew = subtask.getStatus().equals("NEW");
-            statusProgress = subtask.getStatus().equals("IN_PROGRESS");
-            statusDone = subtask.getStatus().equals("DONE");
+            if (subtask.getStatus().equals("NEW")) {
+                statusNew = true;
+                continue;
+            }
+            if (subtask.getStatus().equals("IN_PROGRESS")) {
+                statusProgress = true;
+                continue;
+            }
+            if (subtask.getStatus().equals("DONE")) {
+                statusDone = true;
+                continue;
+            }
         }
         if (!statusProgress && !statusNew) {
             epic.setStatus("DONE");

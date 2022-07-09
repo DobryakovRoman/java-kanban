@@ -17,8 +17,6 @@ public class Task {
         this.status = "NEW";
     }
 
-
-
     public String getTitle() {
         return title;
     }
