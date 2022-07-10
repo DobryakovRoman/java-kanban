@@ -24,12 +24,16 @@ public class Epic extends Task {
         subtasks.remove(subtask);
     }
 
+    public void removeSubtasks() {
+        subtasks = new ArrayList<>();
+    }
+
     @Override
     public String toString() {
         return "Epic{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", taskID=" + id +
+                ", taskid=" + id +
                 ", status='" + status + '\'' +
                 ", subtasks=" + subtasks +
                 '}';

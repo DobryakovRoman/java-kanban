@@ -34,11 +34,11 @@ public class Task {
         this.description = description;
     }
 
-    public int getId() {
+    public int getid() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setid(int id) {
         this.id = id;
     }
 
@@ -55,7 +55,7 @@ public class Task {
         return "Task{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", taskID=" + id +
+                ", taskid=" + id +
                 ", status='" + status + '\'' +
                 '}';
     }
