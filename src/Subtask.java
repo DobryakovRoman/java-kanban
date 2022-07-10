@@ -1,11 +1,10 @@
 public class Subtask extends Task {
     private Epic epic;
 
-    public Subtask(String title, String description, Epic epic) {
+    public Subtask(String title, String description) {
         super(title, description);
-        this.epic = epic;
-        epic.addSubtask(this);
     }
+
     public Epic getEpic() {
         return epic;
     }
@@ -19,7 +18,7 @@ public class Subtask extends Task {
         return "Subtask{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", taskID=" + taskID +
+                ", taskID=" + id +
                 ", status='" + status + '\'' +
                 '}';
     }

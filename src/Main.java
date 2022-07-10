@@ -8,30 +8,42 @@ public class Main {
         taskManager.addTask(task2);
         Epic epic1 = new Epic("Эпик 1", "С двумя подзадачами");
         taskManager.addEpic(epic1);
-        Subtask subtask1 = new Subtask("Подзадача 1", "Для эпика 1", epic1);
-        Subtask subtask2 = new Subtask("Подзадача 2", "Для эпика 1", epic1);
-        taskManager.addSubtask(subtask1);
-        taskManager.addSubtask(subtask2);
+        Subtask subtask1 = new Subtask("Подзадача 1", "Для эпика 1");
+        Subtask subtask2 = new Subtask("Подзадача 2", "Для эпика 1");
+        taskManager.addSubtask(subtask1, epic1);
+        taskManager.addSubtask(subtask2, epic1);
         Epic epic2 = new Epic("Эпик 2", "С одной подзадачей");
         taskManager.addEpic(epic2);
-        Subtask subtask3 = new Subtask("Подзадача 1", "Для эпика 2", epic2);
-        taskManager.addSubtask(subtask3);
+        Subtask subtask3 = new Subtask("Подзадача 1", "Для эпика 2");
+        taskManager.addSubtask(subtask3, epic2);
 
-        System.out.println(taskManager.tasksToString());
-        System.out.println(taskManager.epicsToString());
-        System.out.println(taskManager.subtasksToString());
+        for (Task task : taskManager.getTasks()) {
+            System.out.println(task);
+        }
+        for (Epic epic : taskManager.getEpics()) {
+            System.out.println(epic);
+        }
+        for (Subtask subtask : taskManager.getSubtasks()) {
+            System.out.println(subtask);
+        }
 
         task2.setStatus("IN_PROGRESS");
-        taskManager.updateTask(task2.getTaskID(), task2);
+        taskManager.updateTask(task2);
         subtask1.setStatus("DONE");
-        taskManager.updateSubtask(subtask1.getTaskID(), subtask1);
+        taskManager.updateSubtask(subtask1);
 
-        taskManager.removeTask(task1.getTaskID());
-        taskManager.removeEpic(epic2.getTaskID());
+        taskManager.removeTask(task1.getId());
+        taskManager.removeEpic(epic2.getId());
 
-        System.out.println(taskManager.tasksToString());
-        System.out.println(taskManager.epicsToString());
-        System.out.println(taskManager.subtasksToString());
+        for (Task task : taskManager.getTasks()) {
+            System.out.println(task);
+        }
+        for (Epic epic : taskManager.getEpics()) {
+            System.out.println(epic);
+        }
+        for (Subtask subtask : taskManager.getSubtasks()) {
+            System.out.println(subtask);
+        }
 
     }
 }
