@@ -27,8 +27,7 @@ public class TaskManager {
     }
 
     public Task getTaskByid(int id) {
-        Task value = tasks.get(id);
-        return value;
+        return tasks.get(id);
     }
 
     public void removeTask(int id) {
@@ -45,7 +44,7 @@ public class TaskManager {
         return new ArrayList<>(values);
     }
 
-    public Epic getEpic(int id) {
+    public Epic getEpicByid(int id) {
         return epics.get(id);
     }
 
@@ -83,8 +82,7 @@ public class TaskManager {
     }
 
     public Subtask getSubtaskByid(int id) {
-        Subtask value = subtasks.get(id);
-        return value;
+        return subtasks.get(id);
     }
 
     public void updateSubtask(Subtask subtask) {
