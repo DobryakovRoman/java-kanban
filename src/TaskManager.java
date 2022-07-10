@@ -66,7 +66,7 @@ public class TaskManager {
 
     public ArrayList<Subtask> getSubtasksOfEpic(int id) {
         ArrayList<Subtask> subtasks = epics.get(id).getSubtasks();
-        return subtasks;
+        return new ArrayList<>(subtasks);
     }
 
     public void addSubtask(Subtask subtask) {
@@ -110,28 +110,24 @@ public class TaskManager {
         boolean statusProgress = false;
         boolean statusDone = false;
         for (Subtask subtask : epic.getSubtasks()) {
-            if (subtask.getStatus().equals("NEW")) {
-                statusNew = true;
-                continue;
-            }
-            if (subtask.getStatus().equals("IN_PROGRESS")) {
-                statusProgress = true;
-                continue;
-            }
-            if (subtask.getStatus().equals("DONE")) {
-                statusDone = true;
-                continue;
+            switch (subtask.getStatus()) {
+                case "NEW":
+                    statusNew = true;
+                    break;
+                case "IN_PROGRESS":
+                    statusProgress = true;
+                    break;
+                case "DONE":
+                    statusDone = true;
+                    break;
             }
         }
         if (!statusProgress && !statusNew) {
             epic.setStatus("DONE");
-            return;
         } else if (!statusProgress && !statusDone) {
             epic.setStatus("NEW");
-            return;
         } else {
             epic.setStatus("IN_PROGRESS");
-            return;
         }
     }
 
