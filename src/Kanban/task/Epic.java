@@ -1,7 +1,9 @@
+package Kanban.task;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks = new ArrayList<>();
+    private ArrayList<Integer> subtasks = new ArrayList<>();
 
     public Epic() {
         super();
@@ -12,16 +14,16 @@ public class Epic extends Task {
         subtasks = new ArrayList<>();
     }
 
-    public ArrayList<Subtask> getSubtasks() {
+    public ArrayList<Integer> getSubtasks() {
         return new ArrayList<>(subtasks);
     }
 
     public void addSubtask(Subtask subtask) {
-        subtasks.add(subtask);
+        subtasks.add(subtask.getid());
     }
 
     public void removeSubtask(Subtask subtask) {
-        subtasks.remove(subtask);
+        subtasks.remove(subtask.getid());
     }
 
     public void removeSubtasks() {
@@ -30,10 +32,10 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "Kanban.task.Epic{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", taskid=" + id +
+                ", id=" + id +
                 ", status='" + status + '\'' +
                 ", subtasks=" + subtasks +
                 '}';

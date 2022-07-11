@@ -1,24 +1,26 @@
+package Kanban.task;
+
 public class Subtask extends Task {
-    private Epic epic;
+    private int epicid;
 
     public Subtask(String title, String description) {
         super(title, description);
     }
 
-    public Epic getEpic() {
-        return epic;
+    public int getEpicid() {
+        return epicid;
     }
 
-    public void setEpic(Epic epic) {
-        this.epic = epic;
+    public void setEpicid(int epicid) {
+        this.epicid = epicid;
     }
 
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "Kanban.task.Subtask{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", taskid=" + id +
+                ", id=" + id +
                 ", status='" + status + '\'' +
                 '}';
     }

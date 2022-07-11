@@ -1,3 +1,8 @@
+import Kanban.service.TaskManager;
+import Kanban.task.Epic;
+import Kanban.task.Subtask;
+import Kanban.task.Task;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,17 +14,16 @@ public class Main {
         Epic epic1 = new Epic("Эпик 1", "С двумя подзадачами");
         taskManager.addEpic(epic1);
         Subtask subtask1 = new Subtask("Подзадача 1", "Для эпика 1");
-        subtask1.setEpic(epic1);
+        subtask1.setEpicid(epic1.getid());
         Subtask subtask2 = new Subtask("Подзадача 2", "Для эпика 1");
-        subtask2.setEpic(epic1);
-
+        subtask2.setEpicid(epic1.getid());
 
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
         Epic epic2 = new Epic("Эпик 2", "С одной подзадачей");
         taskManager.addEpic(epic2);
         Subtask subtask3 = new Subtask("Подзадача 1", "Для эпика 2");
-        subtask3.setEpic(epic2);
+        subtask3.setEpicid(epic2.getid());
         taskManager.addSubtask(subtask3);
 
         for (Task task : taskManager.getTasks()) {
@@ -49,6 +53,5 @@ public class Main {
         for (Subtask subtask : taskManager.getSubtasks()) {
             System.out.println(subtask);
         }
-
     }
 }

@@ -1,3 +1,5 @@
+package Kanban.task;
+
 public class Task {
     protected String title;
     protected String description;
@@ -52,10 +54,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Kanban.task.Task{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", taskid=" + id +
+                ", id=" + id +
                 ", status='" + status + '\'' +
                 '}';
     }

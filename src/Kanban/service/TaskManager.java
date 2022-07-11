@@ -1,4 +1,7 @@
+package Kanban.service;
+
 import java.util.*;
+import Kanban.task.*;
 
 public class TaskManager {
     private int taskid;
@@ -58,22 +61,25 @@ public class TaskManager {
 
     public void removeEpic(int id) {
         Epic epic = epics.get(id);
-        for (Subtask subtask : epic.getSubtasks()) {
-            subtasks.remove(subtask.getid());
+        for (int subtask : epic.getSubtasks()) {
+            subtasks.remove(subtask);
         }
         epics.remove(id);
     }
 
     public ArrayList<Subtask> getSubtasksOfEpic(int id) {
-        ArrayList<Subtask> subtasks = epics.get(id).getSubtasks();
-        return new ArrayList<>(subtasks);
+        ArrayList<Subtask> subtasks = new ArrayList<>();
+        for (Integer subtask : epics.get(id).getSubtasks()) {
+            subtasks.add(this.subtasks.get(subtask));
+        }
+        return subtasks;
     }
 
     public void addSubtask(Subtask subtask) {
         subtask.setid(++taskid);
         subtasks.put(taskid, subtask);
-        subtask.getEpic().addSubtask(subtask);
-        updateEpicStatus(subtask.getEpic());
+        epics.get(subtask.getEpicid()).addSubtask(subtask);
+        updateEpicStatus(epics.get(subtask.getEpicid()));
     }
 
     public List<Subtask> getSubtasks() {
@@ -87,30 +93,31 @@ public class TaskManager {
 
     public void updateSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getid())) {
-            subtask.getEpic().removeSubtask(subtasks.get(subtask.getid()));
-            subtasks.replace(subtask.getid(), subtask);
-            subtask.getEpic().addSubtask(subtask);
-            updateEpicStatus(subtask.getEpic());
+            Subtask tempSubtask = subtasks.get(subtask.getid());
+            tempSubtask.setTitle(subtask.getTitle());
+            tempSubtask.setDescription(subtask.getDescription());
+            tempSubtask.setStatus(subtask.getStatus());
+            updateEpicStatus(epics.get(subtask.getEpicid()));
         }
     }
 
     public void removeSubtask(int id) {
         Subtask subtask = subtasks.get(id);
-        subtask.getEpic().removeSubtask(subtask);
+        epics.get(subtask.getEpicid()).removeSubtask(subtask);
         subtasks.remove(id);
-        updateEpicStatus(subtask.getEpic());
+        updateEpicStatus(epics.get(subtask.getEpicid()));
     }
 
     private void updateEpicStatus(Epic epic) {
-        if (epic.getSubtasks() == null) {
+        if (epic.getSubtasks().isEmpty()) {
             epic.setStatus("NEW");
             return;
         }
         boolean statusNew = false;
         boolean statusProgress = false;
         boolean statusDone = false;
-        for (Subtask subtask : epic.getSubtasks()) {
-            switch (subtask.getStatus()) {
+        for (Integer subtask : epic.getSubtasks()) {
+            switch (subtasks.get(subtask).getStatus()) {
                 case "NEW":
                     statusNew = true;
                     break;
@@ -144,9 +151,9 @@ public class TaskManager {
 
     public void clearEpics() {
         for (Epic epic : epics.values()) {
-            if (epic.getSubtasks() != null) {
-                for (Subtask subtask : epic.getSubtasks()) {
-                    subtasks.remove(subtask.getid());
+            if (!epic.getSubtasks().isEmpty()) {
+                for (Integer subtask : epic.getSubtasks()) {
+                    subtasks.remove(subtask);
                 }
             }
         }
