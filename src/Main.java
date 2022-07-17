@@ -1,4 +1,7 @@
+import Kanban.constants.Status;
 import Kanban.service.InMemoryTaskManager;
+import Kanban.service.Managers;
+import Kanban.service.TaskManager;
 import Kanban.task.Epic;
 import Kanban.task.Subtask;
 import Kanban.task.Task;
@@ -6,7 +9,9 @@ import Kanban.task.Task;
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        TaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        Managers managers = new Managers(inMemoryTaskManager);
+        inMemoryTaskManager = managers.getDefault();
         Task task1 = new Task("Задача 1", "Создать задачу 1");
         Task task2 = new Task("Задача 2", "Создать задачу 2");
         inMemoryTaskManager.addTask(task1);
@@ -36,9 +41,9 @@ public class Main {
             System.out.println(subtask);
         }
 
-        task2.setStatus("IN_PROGRESS");
+        task2.setStatus(Status.IN_PROGRESS);
         inMemoryTaskManager.updateTask(task2);
-        subtask1.setStatus("DONE");
+        subtask1.setStatus(Status.DONE);
         inMemoryTaskManager.updateSubtask(subtask1);
 
         inMemoryTaskManager.removeTask(task1.getid());

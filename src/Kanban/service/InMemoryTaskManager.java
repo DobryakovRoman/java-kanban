@@ -1,6 +1,8 @@
 package Kanban.service;
 
 import java.util.*;
+
+import Kanban.constants.Status;
 import Kanban.task.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -8,7 +10,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private HistoryService<Task> history = new HistoryService<>();
+    private HistoryManager<Task> history = Managers.getDefaultHistory();
 
     public InMemoryTaskManager() {
         taskid = 0;
@@ -131,7 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpicStatus(Epic epic) {
         if (epic.getSubtasks().isEmpty()) {
-            epic.setStatus("NEW");
+            epic.setStatus(Status.NEW);
             return;
         }
         boolean statusNew = false;
@@ -139,23 +141,23 @@ public class InMemoryTaskManager implements TaskManager {
         boolean statusDone = false;
         for (Integer subtask : epic.getSubtasks()) {
             switch (subtasks.get(subtask).getStatus()) {
-                case "NEW":
+                case NEW:
                     statusNew = true;
                     break;
-                case "IN_PROGRESS":
+                case IN_PROGRESS:
                     statusProgress = true;
                     break;
-                case "DONE":
+                case DONE:
                     statusDone = true;
                     break;
             }
         }
         if (!statusProgress && !statusNew) {
-            epic.setStatus("DONE");
+            epic.setStatus(Status.DONE);
         } else if (!statusProgress && !statusDone) {
-            epic.setStatus("NEW");
+            epic.setStatus(Status.NEW);
         } else {
-            epic.setStatus("IN_PROGRESS");
+            epic.setStatus(Status.IN_PROGRESS);
         }
     }
 

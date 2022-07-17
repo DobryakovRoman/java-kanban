@@ -1,22 +1,23 @@
 package Kanban.task;
+import Kanban.constants.Status;
 
 public class Task {
     protected String title;
     protected String description;
     protected int id;
-    protected String status;
+    protected Status status;
 
     public Task() {
         title = "";
         description = "";
         id = 0;
-        status = "NEW";
+        status = Status.NEW;
     }
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        status = "NEW";
+        status = Status.NEW;
         id = 0;
     }
 
@@ -44,11 +45,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
