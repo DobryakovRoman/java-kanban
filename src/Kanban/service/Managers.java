@@ -5,14 +5,9 @@ import Kanban.task.Task;
 import java.util.ArrayList;
 
 public class Managers {
-    private ArrayList<TaskManager> managers = new ArrayList<>();
 
-    public Managers(TaskManager taskManager) {
-        managers.add(taskManager);
-    }
-
-    public TaskManager getDefault() {
-        return managers.get(0);
+    public static TaskManager getDefault() {
+        return new InMemoryTaskManager();
     }
 
     public static HistoryManager<Task> getDefaultHistory() {

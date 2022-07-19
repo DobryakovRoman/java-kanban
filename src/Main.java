@@ -9,9 +9,7 @@ import Kanban.task.Task;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager inMemoryTaskManager = new InMemoryTaskManager();
-        Managers managers = new Managers(inMemoryTaskManager);
-        inMemoryTaskManager = managers.getDefault();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task1 = new Task("Задача 1", "Создать задачу 1");
         Task task2 = new Task("Задача 2", "Создать задачу 2");
         inMemoryTaskManager.addTask(task1);
