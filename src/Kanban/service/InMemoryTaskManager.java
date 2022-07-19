@@ -130,8 +130,7 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicStatus(epics.get(subtask.getEpicid()));
     }
 
-    @Override
-    public void updateEpicStatus(Epic epic) {
+    private void updateEpicStatus(Epic epic) {
         if (epic.getSubtasks().isEmpty()) {
             epic.setStatus(Status.NEW);
             return;
@@ -200,8 +199,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(history.getHistory());
     }
 
-    @Override
-    public void updateHistory(Task task) {
+    private void updateHistory(Task task) {
         history.add(task);
     }
 }

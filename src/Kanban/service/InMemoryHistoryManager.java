@@ -4,7 +4,7 @@ import Kanban.task.Task;
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T> {
-    public static final int HISTORY_LENGTH = 10;
+    private static final int HISTORY_LENGTH = 10;
     ArrayList<T> history = new ArrayList<>();
 
     @Override

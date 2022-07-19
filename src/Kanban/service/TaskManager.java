@@ -24,11 +24,9 @@ public interface TaskManager {
         public Subtask getSubtaskByid(int id);
         public void updateSubtask(Subtask subtask);
         public void removeSubtask(int id);
-        public void updateEpicStatus(Epic epic);
         public void clear();
         public void clearTasks();
         public void clearEpics();
         public void clearSubtasks();
         public List<Task> getHistory();
-        public void updateHistory(Task task);
 }
