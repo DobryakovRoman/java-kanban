@@ -18,6 +18,11 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T>
     }
 
     @Override
+    public void remove(int id) {
+        history.remove(id);
+    }
+
+    @Override
     public List<T> getHistory() {
         return history;
     }
