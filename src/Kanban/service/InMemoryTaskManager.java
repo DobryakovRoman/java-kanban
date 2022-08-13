@@ -199,7 +199,4 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(history.getHistory());
     }
 
-    private void updateHistory(Task task) {
-        history.add(task);
-    }
 }
