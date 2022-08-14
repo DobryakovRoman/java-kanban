@@ -7,9 +7,9 @@ import Kanban.task.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int taskid;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private Map<Integer, Task> tasks = new HashMap<>();
+    private Map<Integer, Epic> epics = new HashMap<>();
+    private Map<Integer, Subtask> subtasks = new HashMap<>();
     private HistoryManager<Task> history = Managers.getDefaultHistory();
 
     public InMemoryTaskManager() {
@@ -44,6 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTask(int id) {
         tasks.remove(id);
+        history.remove(id);
     }
 
     @Override
@@ -129,7 +130,56 @@ public class InMemoryTaskManager implements TaskManager {
         Subtask subtask = subtasks.get(id);
         epics.get(subtask.getEpicid()).removeSubtask(subtask);
         subtasks.remove(id);
+        history.remove(id);
         updateEpicStatus(epics.get(subtask.getEpicid()));
+    }
+
+    @Override
+    public void clear() {
+        tasks = new HashMap<>();
+        epics = new HashMap<>();
+        subtasks = new HashMap<>();
+        taskid = 0;
+        history = Managers.getDefaultHistory();
+    }
+
+    @Override
+    public void clearTasks() {
+        for (Integer taskId : tasks.keySet()) {
+            history.remove(taskId);
+        }
+        tasks = new HashMap<>();
+    }
+
+    @Override
+    public void clearEpics() {
+        for (Epic epic : epics.values()) {
+            if (!epic.getSubtasks().isEmpty()) {
+                for (Integer subtask : epic.getSubtasks()) {
+                    subtasks.remove(subtask);
+                    history.remove(subtask);
+                }
+            }
+            history.remove(epic.getid());
+        }
+        epics = new HashMap<>();
+    }
+
+    @Override
+    public void clearSubtasks() {
+        for (Integer subtaskId : subtasks.keySet()) {
+            history.remove(subtaskId);
+        }
+        subtasks = new HashMap<>();
+        for (Epic epic : epics.values()) {
+            epic.removeSubtasks();
+            updateEpicStatus(epic);
+        }
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return new ArrayList<>(history.getHistory());
     }
 
     private void updateEpicStatus(Epic epic) {
@@ -161,44 +211,4 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(Status.IN_PROGRESS);
         }
     }
-
-    @Override
-    public void clear() {
-        tasks = new HashMap<>();
-        epics = new HashMap<>();
-        subtasks = new HashMap<>();
-        taskid = 0;
-    }
-
-    @Override
-    public void clearTasks() {
-        tasks = new HashMap<>();
-    }
-
-    @Override
-    public void clearEpics() {
-        for (Epic epic : epics.values()) {
-            if (!epic.getSubtasks().isEmpty()) {
-                for (Integer subtask : epic.getSubtasks()) {
-                    subtasks.remove(subtask);
-                }
-            }
-        }
-        epics = new HashMap<>();
-    }
-
-    @Override
-    public void clearSubtasks() {
-        subtasks = new HashMap<>();
-        for (Epic epic : epics.values()) {
-            epic.removeSubtasks();
-            updateEpicStatus(epic);
-        }
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return new ArrayList<>(history.getHistory());
-    }
-
 }
