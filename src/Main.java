@@ -57,6 +57,7 @@ public class Main {
             System.out.println(subtask);
         }
 
+
         inMemoryTaskManager.getTaskById(2);
         inMemoryTaskManager.getEpicById(3);
         inMemoryTaskManager.getSubtaskByid(4);
@@ -70,6 +71,8 @@ public class Main {
         inMemoryTaskManager.getSubtaskByid(4);
         inMemoryTaskManager.getTaskById(2);
 
+        System.out.println(inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.removeEpic(3);
         System.out.println(inMemoryTaskManager.getHistory());
     }
 }
