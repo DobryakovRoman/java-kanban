@@ -6,10 +6,11 @@ import Kanban.task.Epic;
 import Kanban.task.Subtask;
 import Kanban.task.Task;
 
+import java.io.File;
+
 public class Main {
 
     public static void main(String[] args) {
-        //TaskManager inMemoryTaskManager = Managers.getDefault();
         TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task1 = new Task("Задача 1", "Создать задачу 1");
         Task task2 = new Task("Задача 2", "Создать задачу 2");
@@ -75,5 +76,39 @@ public class Main {
         System.out.println(inMemoryTaskManager.getHistory());
         inMemoryTaskManager.removeEpic(3);
         System.out.println(inMemoryTaskManager.getHistory());
+
+        TaskManager fileBackedTaskManager = Managers.loadFromFile(new File("data.csv"));
+        Task task3 = new Task("Задача 1", "Создать задачу 1");
+        Task task4 = new Task("Задача 2", "Создать задачу 2");
+        fileBackedTaskManager.addTask(task3);
+        fileBackedTaskManager.addTask(task4);
+        Epic epic3 = new Epic("Эпик 1", "С двумя подзадачами");
+        fileBackedTaskManager.addEpic(epic3);
+        Subtask subtask4 = new Subtask("Подзадача 1", "Для эпика 1");
+        subtask4.setEpicid(epic3.getid());
+        Subtask subtask5 = new Subtask("Подзадача 2", "Для эпика 1");
+        subtask5.setEpicid(epic3.getid());
+
+        fileBackedTaskManager.addSubtask(subtask4);
+        fileBackedTaskManager.addSubtask(subtask5);
+        Epic epic4 = new Epic("Эпик 2", "С одной подзадачей");
+        fileBackedTaskManager.addEpic(epic4);
+        Subtask subtask6 = new Subtask("Подзадача 1", "Для эпика 2");
+        subtask6.setEpicid(epic4.getid());
+        fileBackedTaskManager.addSubtask(subtask6);
+
+        fileBackedTaskManager.getTaskById(2);
+        fileBackedTaskManager.getEpicById(3);
+        fileBackedTaskManager.getSubtaskByid(4);
+        fileBackedTaskManager.getTaskById(2);
+        fileBackedTaskManager.getTaskById(2);
+        fileBackedTaskManager.getEpicById(3);
+        fileBackedTaskManager.getSubtaskByid(4);
+        fileBackedTaskManager.getTaskById(2);
+        fileBackedTaskManager.getTaskById(2);
+        fileBackedTaskManager.getEpicById(3);
+        fileBackedTaskManager.getSubtaskByid(4);
+        fileBackedTaskManager.getTaskById(2);
+
     }
 }
