@@ -1,11 +1,13 @@
 package Kanban.task;
 import Kanban.constants.Status;
+import Kanban.constants.TaskType;
 
 public class Task {
     protected String title;
     protected String description;
     protected int id;
     protected Status status;
+    protected TaskType taskType;
 
     public Task() {
         title = "";
@@ -51,6 +53,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
     }
 
     @Override

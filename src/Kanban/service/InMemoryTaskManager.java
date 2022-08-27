@@ -7,10 +7,10 @@ import Kanban.task.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private int taskid;
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private Map<Integer, Subtask> subtasks = new HashMap<>();
-    private HistoryManager<Task> history = Managers.getDefaultHistory();
+    protected Map<Integer, Task> tasks = new HashMap<>();
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected HistoryManager<Task> history = Managers.getDefaultHistory();
 
     public InMemoryTaskManager() {
         taskid = 0;
