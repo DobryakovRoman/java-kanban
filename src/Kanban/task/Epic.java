@@ -1,5 +1,8 @@
 package Kanban.task;
 
+import Kanban.constants.Status;
+import Kanban.constants.TaskType;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -10,7 +13,12 @@ public class Epic extends Task {
     }
 
     public Epic(String title, String description) {
-        super(title, description);
+        super(title, description, TaskType.EPIC);
+        subtasks = new ArrayList<>();
+    }
+
+    public Epic(String title, String description, int id, Status status, TaskType taskType) {
+        super(title, description, id, status, taskType);
         subtasks = new ArrayList<>();
     }
 

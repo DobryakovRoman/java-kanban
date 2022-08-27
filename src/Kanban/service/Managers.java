@@ -21,17 +21,6 @@ public class Managers {
 
     public static FileBackedTaskManager loadFromFile(File file) {
         final FileBackedTaskManager taskManager = new FileBackedTaskManager(file);
-        try {
-            if (Files.exists(file.toPath())){
-                FileReader reader = new FileReader(file);
-                BufferedReader br = new BufferedReader(reader);
-                while (br.ready()) {
-
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return taskManager;
     }
 }

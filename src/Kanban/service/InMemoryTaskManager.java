@@ -6,7 +6,7 @@ import Kanban.constants.Status;
 import Kanban.task.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private int taskid;
+    protected int taskid;
     protected Map<Integer, Task> tasks = new HashMap<>();
     protected Map<Integer, Epic> epics = new HashMap<>();
     protected Map<Integer, Subtask> subtasks = new HashMap<>();

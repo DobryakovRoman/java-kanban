@@ -14,6 +14,7 @@ public class Task {
         description = "";
         id = 0;
         status = Status.NEW;
+        taskType = TaskType.TASK;
     }
 
     public Task(String title, String description) {
@@ -21,6 +22,23 @@ public class Task {
         this.description = description;
         status = Status.NEW;
         id = 0;
+        taskType = TaskType.TASK;
+    }
+
+    public Task(String title, String description, TaskType taskType) {
+        this.title = title;
+        this.description = description;
+        status = Status.NEW;
+        id = 0;
+        this.taskType = taskType;
+    }
+
+    public Task(String title, String description, int id, Status status, TaskType taskType) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.taskType = taskType;
     }
 
     public String getTitle() {

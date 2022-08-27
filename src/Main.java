@@ -7,6 +7,9 @@ import Kanban.task.Subtask;
 import Kanban.task.Task;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Main {
 
@@ -77,7 +80,8 @@ public class Main {
         inMemoryTaskManager.removeEpic(3);
         System.out.println(inMemoryTaskManager.getHistory());
 
-        TaskManager fileBackedTaskManager = Managers.loadFromFile(new File("data.csv"));
+        String fileName = "data.csv";
+        TaskManager fileBackedTaskManager = Managers.loadFromFile(new File(fileName));
         Task task3 = new Task("Задача 1", "Создать задачу 1");
         Task task4 = new Task("Задача 2", "Создать задачу 2");
         fileBackedTaskManager.addTask(task3);
