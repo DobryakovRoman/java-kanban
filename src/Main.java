@@ -114,5 +114,8 @@ public class Main {
         fileBackedTaskManager.getSubtaskByid(4);
         fileBackedTaskManager.getTaskById(2);
 
+        System.out.println(fileBackedTaskManager.getHistory());
+        fileBackedTaskManager.removeEpic(3);
+        System.out.println(fileBackedTaskManager.getHistory());
     }
 }

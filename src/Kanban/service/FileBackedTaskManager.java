@@ -26,14 +26,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                     String line = br.readLine();
                     if (line.isEmpty()) {
                         line = br.readLine();
-                        for (Integer id : historyFromString(line)) {
-                            if (tasks.containsKey(id))
-                                history.add(tasks.get(id));
-                             else if (epics.containsKey(id))
-                                history.add(epics.get(id));
-                             else if (subtasks.containsKey(id))
-                                history.add(subtasks.get(id));
+                        if (line != null) {
+                            for (Integer id : historyFromString(line)) {
+                                if (tasks.containsKey(id))
+                                    history.add(tasks.get(id));
+                                else if (epics.containsKey(id))
+                                    history.add(epics.get(id));
+                                else if (subtasks.containsKey(id))
+                                    history.add(subtasks.get(id));
+
+                            }
                         }
+                        continue;
                     }
                     Task task = taskFromString(line);
                     if (task != null) {

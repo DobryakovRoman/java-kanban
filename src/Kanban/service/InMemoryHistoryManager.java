@@ -65,6 +65,11 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T>
 
     private void removeNode(int id) {
         Node remove = nodeMap.remove(id);
+        if (nodeMap.size() == 0) {
+            first = null;
+            last = null;
+            return;
+        }
         if (remove != null) {
             if (first == remove) {
                 first = remove.next;
