@@ -18,9 +18,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
     private final Path path;
 
     public FileBackedTaskManager(File file) {
-        this.path = file.toPath();
+        path = file.toPath();
+        load(path);
+    }
+
+    private void load(Path path) {
         if (Files.exists(path)) {
-            try (FileReader reader = new FileReader(file);
+            try (FileReader reader = new FileReader(path.toFile());
                  BufferedReader br = new BufferedReader(reader)) {
                 while (br.ready()) {
                     String line = br.readLine();
@@ -28,13 +32,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                         line = br.readLine();
                         if (line != null) {
                             for (Integer id : historyFromString(line)) {
-                                if (tasks.containsKey(id))
+                                if (tasks.containsKey(id)) {
                                     history.add(tasks.get(id));
-                                else if (epics.containsKey(id))
+                                }
+                                else if (epics.containsKey(id)) {
                                     history.add(epics.get(id));
-                                else if (subtasks.containsKey(id))
+                                }
+                                else if (subtasks.containsKey(id)) {
                                     history.add(subtasks.get(id));
-
+                                }
                             }
                         }
                         continue;
@@ -60,7 +66,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                     }
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new ManagerSaveException(e.getMessage());
             }
         }
     }
@@ -68,167 +74,103 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
     @Override
     public void addTask(Task task) {
         super.addTask(task);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void updateTask(Task task) {
         super.updateTask(task);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public Task getTaskById(int id) {
         Task task = super.getTaskById(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
         return task;
     }
 
     @Override
     public void removeTask(int id) {
         super.removeTask(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void addEpic(Epic epic) {
         super.addEpic(epic);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public Epic getEpicById(int id) {
         Epic epic = super.getEpicById(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
         return epic;
     }
 
     @Override
     public void updateEpic(Epic epic) {
         super.updateEpic(epic);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void removeEpic(int id) {
         super.removeEpic(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void addSubtask(Subtask subtask) {
         super.addSubtask(subtask);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public Subtask getSubtaskByid(int id) {
         Subtask subtask = super.getSubtaskByid(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
         return subtask;
     }
 
     @Override
     public void updateSubtask(Subtask subtask) {
         super.updateSubtask(subtask);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void removeSubtask(int id) {
         super.removeSubtask(id);
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void clear() {
         super.clear();
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void clearTasks() {
         super.clearTasks();
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void clearEpics() {
         super.clearEpics();
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
     @Override
     public void clearSubtasks() {
         super.clearSubtasks();
-        try {
-            save();
-        } catch (ManagerSaveException e) {
-            throw new RuntimeException(e);
-        }
+        save();
     }
 
-    private void save() throws ManagerSaveException {
+    private void save() {
         try (Writer writer = new FileWriter(path.toString())) {
             if (Files.exists(Paths.get(path.toString()))) {
                 writer.write("id,type,name,status,description,epic\n");
@@ -319,7 +261,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
             history.append(String.format("%d,", ((Task) task).getid()));
         }
         if (history.indexOf(",") > 0)
-            return history.toString().substring(0,history.lastIndexOf(","));
+            return history.toString().substring(0, history.lastIndexOf(","));
         else
             return history.toString();
     }
