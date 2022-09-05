@@ -47,18 +47,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                     }
                     Task task = taskFromString(line);
                     if (task != null) {
+                        if (task.getid() > taskid) {
+                            taskid = task.getid();
+                        }
                         switch (task.getTaskType()) {
                             case TASK:
                                 tasks.put(task.getid(), task);
-                                taskid = task.getid();
                                 break;
                             case EPIC:
                                 epics.put(task.getid(), (Epic) task);
-                                taskid = task.getid();
                                 break;
                             case SUBTASK:
                                 Subtask subtask = (Subtask) task;
-                                taskid = task.getid();
                                 subtasks.put(task.getid(), subtask);
                                 epics.get(subtask.getEpicid()).addSubtask(subtask);
                                 break;
@@ -179,12 +179,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                 }
                 for (Epic epic : epics.values()) {
                     writer.write(taskToString(epic));
-                    if (epic.getSubtasks() != null) {
-                        for (Integer subtaskId : epic.getSubtasks()) {
-                            Subtask subtask = subtasks.get(subtaskId);
-                            writer.write(taskToString(subtask));
-                        }
-                    }
+                }
+                for (Subtask subtask : subtasks.values()) {
+                    writer.write(taskToString(subtask));
                 }
                 writer.write("\n");
                 writer.write(historyToString(history));
