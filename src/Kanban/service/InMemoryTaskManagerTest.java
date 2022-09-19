@@ -4,13 +4,16 @@ package Kanban.service;
 import Kanban.constants.Status;
 import Kanban.task.Epic;
 import Kanban.task.Subtask;
+import Kanban.task.Task;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
@@ -85,5 +88,42 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         taskManager.addSubtask(subtask);
         assertEquals(Status.IN_PROGRESS, epic.getStatus());
     }
+
+    @Test
+    void addTaskAndGetTasksAndGetTaskByIdTest() {
+        assertEquals(new ArrayList<Task>(), taskManager.getTasks());
+        assertEquals(null, taskManager.getTaskById(1));
+        initTasks();
+        assertEquals(3, taskManager.getTasks().size());
+        Task task = new Task("Задача 1", "Создать задачу 1", now, 10);
+        task.setid(1);
+        assertEquals(task, taskManager.getTaskById(1));
+        assertNotEquals(task, taskManager.getTaskById(4));
+    }
+
+    @Test
+    void updateTaskTest() {
+        taskManager.updateTask(new Task("Задача 1", "Создать задачу 1", now, 10));
+        assertEquals(0, taskManager.getTasks().size());
+        initTasks();
+        Task task = new Task("Задача 5", "Создать задачу 1", now, 10);
+        task.setid(1);
+        taskManager.updateTask(task);
+        assertEquals(task, taskManager.getTaskById(1));
+        assertNotEquals(task, taskManager.getTaskById(6));
+    }
+
+    @Test
+    void removeTaskTest() {
+        taskManager.removeTask(1);
+        assertEquals(0, taskManager.getTasks().size());
+        initTasks();
+        taskManager.removeTask(1);
+        assertEquals(2, taskManager.getTasks().size());
+        taskManager.removeTask(1);
+        assertEquals(2, taskManager.getTasks().size());
+    }
+
+
 
 }
