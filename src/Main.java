@@ -10,27 +10,29 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task1 = new Task("Задача 1", "Создать задачу 1");
-        Task task2 = new Task("Задача 2", "Создать задачу 2");
+        LocalDateTime now = LocalDateTime.now();
+        Task task1 = new Task("Задача 1", "Создать задачу 1", now, 10);
+        Task task2 = new Task("Задача 2", "Создать задачу 2", now.plusMinutes(20), 10);
         inMemoryTaskManager.addTask(task1);
         inMemoryTaskManager.addTask(task2);
         Epic epic1 = new Epic("Эпик 1", "С двумя подзадачами");
         inMemoryTaskManager.addEpic(epic1);
-        Subtask subtask1 = new Subtask("Подзадача 1", "Для эпика 1");
+        Subtask subtask1 = new Subtask("Подзадача 1", "Для эпика 1", now.plusMinutes(40), 10);
         subtask1.setEpicid(epic1.getid());
-        Subtask subtask2 = new Subtask("Подзадача 2", "Для эпика 1");
+        Subtask subtask2 = new Subtask("Подзадача 2", "Для эпика 1", now.plusMinutes(50), 10);
         subtask2.setEpicid(epic1.getid());
 
         inMemoryTaskManager.addSubtask(subtask1);
         inMemoryTaskManager.addSubtask(subtask2);
         Epic epic2 = new Epic("Эпик 2", "С одной подзадачей");
         inMemoryTaskManager.addEpic(epic2);
-        Subtask subtask3 = new Subtask("Подзадача 1", "Для эпика 2");
+        Subtask subtask3 = new Subtask("Подзадача 1", "Для эпика 2", now.plusMinutes(10), 10);
         subtask3.setEpicid(epic2.getid());
         inMemoryTaskManager.addSubtask(subtask3);
 
@@ -82,22 +84,22 @@ public class Main {
 
         String fileName = "data.csv";
         TaskManager fileBackedTaskManager = Managers.loadFromFile(new File(fileName));
-        Task task3 = new Task("Задача 1", "Создать задачу 1");
-        Task task4 = new Task("Задача 2", "Создать задачу 2");
+        Task task3 = new Task("Задача 1", "Создать задачу 1", now, 10);
+        Task task4 = new Task("Задача 2", "Создать задачу 2", now.plusMinutes(20), 10);
         fileBackedTaskManager.addTask(task3);
         fileBackedTaskManager.addTask(task4);
         Epic epic3 = new Epic("Эпик 1", "С двумя подзадачами");
         fileBackedTaskManager.addEpic(epic3);
-        Subtask subtask4 = new Subtask("Подзадача 1", "Для эпика 1");
+        Subtask subtask4 = new Subtask("Подзадача 1", "Для эпика 1", now.plusMinutes(40), 10);
         subtask4.setEpicid(epic3.getid());
-        Subtask subtask5 = new Subtask("Подзадача 2", "Для эпика 1");
+        Subtask subtask5 = new Subtask("Подзадача 2", "Для эпика 1", now.plusMinutes(50), 10);
         subtask5.setEpicid(epic3.getid());
 
         fileBackedTaskManager.addSubtask(subtask4);
         fileBackedTaskManager.addSubtask(subtask5);
         Epic epic4 = new Epic("Эпик 2", "С одной подзадачей");
         fileBackedTaskManager.addEpic(epic4);
-        Subtask subtask6 = new Subtask("Подзадача 1", "Для эпика 2");
+        Subtask subtask6 = new Subtask("Подзадача 1", "Для эпика 2", now.plusMinutes(10), 10);
         subtask6.setEpicid(epic4.getid());
         fileBackedTaskManager.addSubtask(subtask6);
 

@@ -88,7 +88,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
             epics.remove(id);
             history.remove(id);
-        } else return;
+        }
     }
 
     @Override
@@ -106,7 +106,10 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.put(taskid, subtask);
         epics.get(subtask.getEpicid()).addSubtask(subtask);
         updateEpicStatus(epics.get(subtask.getEpicid()));
+        updateEpicStartTimeAndEndTime(epics.get(subtask.getEpicid()));
     }
+
+
 
     @Override
     public List<Subtask> getSubtasks() {
@@ -140,6 +143,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.remove(id);
         history.remove(id);
         updateEpicStatus(epics.get(subtask.getEpicid()));
+        updateEpicStartTimeAndEndTime(epics.get(subtask.getEpicid()));
     }
 
     @Override
@@ -182,6 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             epic.removeSubtasks();
             updateEpicStatus(epic);
+            updateEpicStartTimeAndEndTime(epic);
         }
     }
 
@@ -217,6 +222,26 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(Status.NEW);
         } else {
             epic.setStatus(Status.IN_PROGRESS);
+        }
+    }
+
+    private void updateEpicStartTimeAndEndTime(Epic epic) {
+        if (epic.getSubtasks() != null) {
+            int epicDuration = 0;
+            for (Integer epicSubtask : epic.getSubtasks()) {
+                if (epic.getStartTime() == null || epic.getStartTime().isAfter(subtasks.get(epicSubtask).getStartTime())) {
+                    epic.setStartTime(subtasks.get(epicSubtask).getStartTime());
+                }
+                if (epic.getEndTime() == null || epic.getEndTime().isBefore(subtasks.get(epicSubtask).getEndTime())) {
+                    epic.setEndTime(subtasks.get(epicSubtask).getEndTime());
+                }
+                epicDuration += subtasks.get(epicSubtask).getDuration();
+            }
+            epic.setDuration(epicDuration);
+        } else {
+            epic.setStartTime(null);
+            epic.setDuration(0);
+            epic.setEndTime(null);
         }
     }
 }
