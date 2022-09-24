@@ -19,21 +19,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addTask(new Task("Задача 3", "Создать задачу 3", now.plusMinutes(50), 30));
     }
 
-
-
-    protected void initEpic() {
-
+    protected void callTasks() {
+        taskManager.getTaskById(1);
+        taskManager.getTaskById(2);
+        taskManager.getTaskById(3);
     }
 
-    protected void initSubtasksNew() {
-
-    }
-
-    protected void initSubtasksNewDone() {
-
-    }
-
-    protected void initSubtasksIn_progress() {
-
-    }
 }
