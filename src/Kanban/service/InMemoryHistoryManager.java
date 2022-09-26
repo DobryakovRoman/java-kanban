@@ -85,4 +85,24 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T>
             remove.prev.next = remove.next;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        InMemoryHistoryManager<?> that = (InMemoryHistoryManager<?>) o;
+
+        if (nodeMap != null ? !nodeMap.equals(that.nodeMap) : that.nodeMap != null) return false;
+        if (!Objects.equals(first, that.first)) return false;
+        return Objects.equals(last, that.last);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nodeMap != null ? nodeMap.hashCode() : 0;
+        result = 31 * result + (first != null ? first.hashCode() : 0);
+        result = 31 * result + (last != null ? last.hashCode() : 0);
+        return result;
+    }
 }
