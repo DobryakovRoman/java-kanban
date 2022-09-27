@@ -7,6 +7,7 @@ import Kanban.task.Task;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void add() {
+    void addAndRemoveTest() {
         assertEquals(Managers.getDefaultHistory(), historyManager);
         Epic epic = new Epic("ep1", "ep1");
         taskManager.addEpic(epic);
@@ -43,15 +44,28 @@ class InMemoryHistoryManagerTest {
         taskManager.removeEpic(1);
         assertEquals(1, taskManager.getHistory().size());
         assertEquals(task, taskManager.getHistory().get(0));
-        RuntimeException ex = new taskManager.getHistory().get(1)
-        assertEquals("Hello", ex.getMessage());
+        RuntimeException ex = assertThrows(RuntimeException.class, new Executable() {
+            @Override
+            public void execute() {
+                taskManager.getHistory().get(1);
+            }
+        });
+        assertEquals("Index 1 out of bounds for length 1", ex.getMessage());
     }
 
     @Test
-    void remove() {
-    }
-
-    @Test
-    void getHistory() {
+    void getHistoryTest() {
+        assertEquals(Managers.getDefaultHistory(), historyManager);
+        Epic epic = new Epic("ep1", "ep1");
+        taskManager.addEpic(epic);
+        taskManager.getEpicById(1);
+        assertEquals(epic, taskManager.getHistory().get(0));
+        RuntimeException ex = assertThrows(RuntimeException.class, new Executable() {
+            @Override
+            public void execute() {
+                taskManager.getHistory().get(1);
+            }
+        });
+        assertEquals("Index 1 out of bounds for length 1", ex.getMessage());
     }
 }
