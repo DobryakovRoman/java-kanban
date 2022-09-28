@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class TaskManagerTest<T extends TaskManager> {
 
     protected T taskManager;
-    protected LocalDateTime now = LocalDateTime.now();
+    protected LocalDateTime now = LocalDateTime.parse("2022-09-28T23:41:00.625776800");
 
     protected void initTasks() {
         taskManager.addTask(new Task("Задача 1", "Создать задачу 1", now, 10));

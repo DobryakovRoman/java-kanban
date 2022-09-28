@@ -11,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
 
     final private File fileName = new File("data.csv");
+    final private File fileNameAddTask = new File("data_addTask.csv");
 
 
     @BeforeEach
     void beforeEach() {
+
         taskManager  = new FileBackedTaskManager(fileName);
 
     }
@@ -22,10 +24,15 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
     @AfterEach
     void afterEach() {
 
+
     }
 
     @Test
     void addTask() {
+        FileBackedTaskManager taskManagerExpected = new FileBackedTaskManager(fileNameAddTask);
+        assertNotEquals(taskManager.getTasks(), taskManagerExpected.getTasks());
+        initTasks();
+        assertEquals(taskManager.getTasks(), taskManagerExpected.getTasks());
     }
 
     @Test
