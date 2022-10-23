@@ -5,10 +5,9 @@ import Kanban.constants.Status;
 import Kanban.task.Epic;
 import Kanban.task.Subtask;
 import Kanban.task.Task;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -257,7 +256,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         assertEquals(new HashMap<>(), taskManager.epics);
         assertEquals(new HashMap<>(), taskManager.tasks);
         assertEquals(new HashMap<>(), taskManager.subtasks);
-        assertEquals(Managers.getDefaultHistory(), taskManager.history);
+        Assertions.assertEquals(Managers.getDefaultHistory(), taskManager.history);
         initTasks();
         LocalDateTime now = LocalDateTime.now();
         taskManager.addEpic(new Epic("ep1", "ep1"));

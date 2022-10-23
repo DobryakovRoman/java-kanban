@@ -246,17 +246,28 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                         Integer.parseInt(data[5]),
                         LocalDateTime.parse(data[6])
                 );
-            case "EPIC":
-                return new Epic(
-                        data[2],
-                        data[4],
-                        Integer.parseInt(data[0]),
-                        Status.valueOf(data[3]),
-                        TaskType.EPIC,
-                        Integer.parseInt(data[5]),
-                        LocalDateTime.parse(data[6]),
-                        LocalDateTime.parse(data[7])
-                );
+            case "EPIC": {
+                if (data.length > 6) {
+                    return new Epic(
+                            data[2],
+                            data[4],
+                            Integer.parseInt(data[0]),
+                            Status.valueOf(data[3]),
+                            TaskType.EPIC,
+                            Integer.parseInt(data[5]),
+                            LocalDateTime.parse(data[6]),
+                            LocalDateTime.parse(data[7])
+                    );
+                } else {
+                    return new Epic(
+                            data[2],
+                            data[4],
+                            Integer.parseInt(data[0]),
+                            Status.valueOf(data[3]),
+                            TaskType.EPIC
+                    );
+                }
+            }
             case "SUBTASK":
                 return new Subtask(
                         data[2],
