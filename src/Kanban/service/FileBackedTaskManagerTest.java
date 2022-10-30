@@ -18,16 +18,12 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
 
     @BeforeEach
     void beforeEach() {
-
         taskManager  = new FileBackedTaskManager(fileName);
-
     }
 
     @AfterEach
     void afterEach() {
-
-        //fileName.delete();
-
+        fileName.delete();
     }
 
     @Test
@@ -212,5 +208,11 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
         assertEquals(1, taskManager.getSubtasks().size());
         taskManager.clearSubtasks();
         assertEquals(taskManager.getSubtasks(), taskManagerExpected.getSubtasks());
+    }
+
+    @Test
+    void getPrioritizedTasksTest() {
+        initTasks();
+        assertEquals(3, taskManager.getPrioritizedTasks().size());
     }
 }

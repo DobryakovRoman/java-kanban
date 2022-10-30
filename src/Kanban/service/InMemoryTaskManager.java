@@ -1,5 +1,6 @@
 package Kanban.service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import Kanban.constants.Status;
@@ -10,6 +11,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected Map<Integer, Task> tasks = new HashMap<>();
     protected Map<Integer, Epic> epics = new HashMap<>();
     protected Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected Set<Task> everyTask = new TreeSet<>((Task o1, Task o2) -> o1.getStartTime().compareTo(o2.getStartTime()));
     protected HistoryManager<Task> history = Managers.getDefaultHistory();
 
     public InMemoryTaskManager() {
@@ -20,6 +22,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void addTask(Task task) {
         task.setid(++taskid);
         tasks.put(task.getid(), task);
+        everyTask.add(task);
     }
 
     @Override
@@ -53,6 +56,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void addEpic(Epic epic) {
         epic.setid(++taskid);
         epics.put(taskid, epic);
+        everyTask.add(epic);
     }
 
     @Override
@@ -109,9 +113,8 @@ public class InMemoryTaskManager implements TaskManager {
         epics.get(subtask.getEpicid()).addSubtask(subtask);
         updateEpicStatus(epics.get(subtask.getEpicid()));
         updateEpicStartTimeAndEndTime(epics.get(subtask.getEpicid()));
+        everyTask.add(subtask);
     }
-
-
 
     @Override
     public List<Subtask> getSubtasks() {
@@ -192,6 +195,23 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epic);
             updateEpicStartTimeAndEndTime(epic);
         }
+    }
+
+    @Override
+    public boolean validateTasks() {
+        ArrayList<Task> prioritizedTasks = (ArrayList<Task>) getPrioritizedTasks();
+        Task currentTask = prioritizedTasks.get(0);
+        for (int i = 1; i < prioritizedTasks.size(); i++) {
+            if (currentTask.getEndTime().isAfter(prioritizedTasks.get(i).getStartTime())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<>(everyTask);
     }
 
     @Override

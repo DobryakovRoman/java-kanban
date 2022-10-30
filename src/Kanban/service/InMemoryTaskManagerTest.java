@@ -333,4 +333,20 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         assertNotEquals(new ArrayList<>(taskManager.getTasks()), taskManager.getHistory());
     }
 
+    @Test
+    void getPrioritizedTasksTest() {
+        initTasks();
+        assertEquals(3, taskManager.getPrioritizedTasks().size());
+    }
+
+    @Test
+    void validateTasksTest() {
+        initTasks();
+        assertTrue(taskManager.validateTasks());
+        LocalDateTime now = LocalDateTime.parse("2022-09-28T23:41:00.625776801");
+        Task task = new Task("Задача 4", "Создать задачу 4", now, 20);
+        task.setid(4);
+        taskManager.addTask(task);
+        assertFalse(taskManager.validateTasks());
+    }
 }
