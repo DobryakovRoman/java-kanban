@@ -28,7 +28,6 @@ public interface TaskManager {
         public void clearTasks();
         public void clearEpics();
         public void clearSubtasks();
-        public boolean validateTasks();
         public List<Task> getPrioritizedTasks();
         public List<Task> getHistory();
 }

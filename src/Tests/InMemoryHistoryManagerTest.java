@@ -1,13 +1,11 @@
-package Kanban.service;
+package Tests;
 
-import Kanban.constants.Status;
 import Kanban.service.HistoryManager;
 import Kanban.service.Managers;
 import Kanban.service.TaskManager;
 import Kanban.task.Epic;
 import Kanban.task.Subtask;
 import Kanban.task.Task;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;

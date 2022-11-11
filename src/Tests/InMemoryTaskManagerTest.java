@@ -1,11 +1,12 @@
-package Kanban.service;
+package Tests;
 
 
 import Kanban.constants.Status;
+import Kanban.service.InMemoryTaskManager;
+import Kanban.service.Managers;
 import Kanban.task.Epic;
 import Kanban.task.Subtask;
 import Kanban.task.Task;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,73 +23,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     void beforeEach() {
         taskManager  = new InMemoryTaskManager();
     }
-    @Test
-    void epicStatusWOSubtasksTest() {
-        taskManager.addEpic(new Epic("ep1", "ep1"));
-        assertEquals(Status.NEW, taskManager.getEpicById(1).getStatus());
-    }
 
-    @Test
-    void epicStatusWNewSubtasksTest() {
-        LocalDateTime now = LocalDateTime.now();
-        taskManager.addEpic(new Epic("ep1", "ep1"));
-        Epic epic = taskManager.getEpicById(1);
-        Subtask subtask = new Subtask("st1", "st1", now, 10);
-        subtask.setEpicid(1);
-        taskManager.addSubtask(subtask);
-        subtask = new Subtask("st2", "st2", now, 10);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        assertEquals(Status.NEW, epic.getStatus());
-    }
 
-    @Test
-    void epicStatusWDoneSubtasksTest() {
-        LocalDateTime now = LocalDateTime.now();
-        taskManager.addEpic(new Epic("ep1", "ep1"));
-        Epic epic = taskManager.getEpicById(1);
-        Subtask subtask = new Subtask("st1", "st1", now, 10);
-        subtask.setStatus(Status.DONE);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        subtask = new Subtask("st2", "st2", now, 10);
-        subtask.setStatus(Status.DONE);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        assertEquals(Status.DONE, epic.getStatus());
-    }
 
-    @Test
-    void epicStatusWDoneAndNewSubtasksTest() {
-        LocalDateTime now = LocalDateTime.now();
-        taskManager.addEpic(new Epic("ep1", "ep1"));
-        Epic epic = taskManager.getEpicById(1);
-        Subtask subtask = new Subtask("st1", "st1", now, 10);
-        subtask.setStatus(Status.DONE);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        subtask = new Subtask("st2", "st2", now, 10);
-        subtask.setStatus(Status.NEW);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        assertEquals(Status.IN_PROGRESS, epic.getStatus());
-    }
-
-    @Test
-    void epicStatusWIn_progressSubtaskTest() {
-        LocalDateTime now = LocalDateTime.now();
-        taskManager.addEpic(new Epic("ep1", "ep1"));
-        Epic epic = taskManager.getEpicById(1);
-        Subtask subtask = new Subtask("st1", "st1", now, 10);
-        subtask.setStatus(Status.IN_PROGRESS);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        subtask = new Subtask("st2", "st2", now, 10);
-        subtask.setStatus(Status.IN_PROGRESS);
-        subtask.setEpicid(epic.getid());
-        taskManager.addSubtask(subtask);
-        assertEquals(Status.IN_PROGRESS, epic.getStatus());
-    }
 
     @Test
     void addTaskAndGetTasksAndGetTaskByIdTest() {
@@ -252,11 +189,11 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
 
     @Test
     void clearTest() {
-        assertEquals(0, taskManager.taskid);
-        assertEquals(new HashMap<>(), taskManager.epics);
-        assertEquals(new HashMap<>(), taskManager.tasks);
-        assertEquals(new HashMap<>(), taskManager.subtasks);
-        Assertions.assertEquals(Managers.getDefaultHistory(), taskManager.history);
+        //assertEquals(0, taskManager.taskid);
+        assertEquals(new ArrayList<>(), taskManager.getEpics());
+        assertEquals(new ArrayList<>(), taskManager.getTasks());
+        assertEquals(new ArrayList<>(), taskManager.getSubtasks());
+        assertEquals(Managers.getDefaultHistory().getHistory(), taskManager.getHistory());
         initTasks();
         LocalDateTime now = LocalDateTime.now();
         taskManager.addEpic(new Epic("ep1", "ep1"));
@@ -264,50 +201,50 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         Subtask subtask1 = new Subtask("st1", "st1", now, 10);
         subtask1.setEpicid(epic.getid());
         taskManager.addSubtask(subtask1);
-        assertEquals(5, taskManager.taskid);
-        assertEquals(3, taskManager.tasks.size());
-        assertEquals(1, taskManager.subtasks.size());
-        assertEquals(1, taskManager.epics.size());
+        //assertEquals(5, taskManager.taskid);
+        assertEquals(3, taskManager.getTasks().size());
+        assertEquals(1, taskManager.getSubtasks().size());
+        assertEquals(1, taskManager.getEpics().size());
         taskManager.clear();
-        assertEquals(0, taskManager.taskid);
-        assertEquals(new HashMap<>(), taskManager.epics);
-        assertEquals(new HashMap<>(), taskManager.tasks);
-        assertEquals(new HashMap<>(), taskManager.subtasks);
-        assertEquals(Managers.getDefaultHistory(), taskManager.history);
+        //assertEquals(0, taskManager.taskid);
+        assertEquals(new ArrayList<>(), taskManager.getEpics());
+        assertEquals(new ArrayList<>(), taskManager.getTasks());
+        assertEquals(new ArrayList<>(), taskManager.getSubtasks());
+        assertEquals(Managers.getDefaultHistory().getHistory(), taskManager.getHistory());
     }
 
     @Test
     void clearTasksTest() {
-        assertEquals(0, taskManager.tasks.size());
+        assertEquals(0, taskManager.getTasks().size());
         initTasks();
-        assertEquals(3, taskManager.tasks.size());
+        assertEquals(3, taskManager.getTasks().size());
         taskManager.clearTasks();
-        assertEquals(0, taskManager.tasks.size());
+        assertEquals(0, taskManager.getTasks().size());
     }
 
     @Test
     void clearEpicsTest() {
-        assertEquals(0, taskManager.epics.size());
-        assertEquals(0, taskManager.subtasks.size());
+        assertEquals(0, taskManager.getEpics().size());
+        assertEquals(0, taskManager.getSubtasks().size());
         LocalDateTime now = LocalDateTime.now();
         taskManager.addEpic(new Epic("ep1", "ep1"));
         Epic epic = taskManager.getEpicById(1);
         Subtask subtask1 = new Subtask("st1", "st1", now, 10);
         subtask1.setEpicid(epic.getid());
         taskManager.addSubtask(subtask1);
-        Subtask subtask2 = new Subtask("st2", "st2", now, 10);
+        Subtask subtask2 = new Subtask("st2", "st2", now.plusMinutes(50), 10);
         subtask2.setEpicid(epic.getid());
         taskManager.addSubtask(subtask2);
-        assertEquals(1, taskManager.epics.size());
-        assertEquals(2, taskManager.subtasks.size());
+        assertEquals(1, taskManager.getEpics().size());
+        assertEquals(2, taskManager.getSubtasks().size());
         taskManager.clearEpics();
-        assertEquals(0, taskManager.epics.size());
-        assertEquals(0, taskManager.subtasks.size());
+        assertEquals(0, taskManager.getEpics().size());
+        assertEquals(0, taskManager.getSubtasks().size());
     }
 
     @Test
     void clearSubtasksTest() {
-        assertEquals(0, taskManager.subtasks.size());
+        assertEquals(0, taskManager.getSubtasks().size());
         LocalDateTime now = LocalDateTime.now();
         taskManager.addEpic(new Epic("ep1", "ep1"));
         Epic epic = taskManager.getEpicById(1);
@@ -317,9 +254,9 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         Subtask subtask2 = new Subtask("st2", "st2", now, 10);
         subtask2.setEpicid(epic.getid());
         taskManager.addSubtask(subtask2);
-        assertEquals(2, taskManager.subtasks.size());
+        assertEquals(2, taskManager.getSubtasks().size());
         taskManager.clearSubtasks();
-        assertEquals(0, taskManager.subtasks.size());
+        assertEquals(0, taskManager.getSubtasks().size());
     }
 
     @Test
@@ -337,16 +274,5 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     void getPrioritizedTasksTest() {
         initTasks();
         assertEquals(3, taskManager.getPrioritizedTasks().size());
-    }
-
-    @Test
-    void validateTasksTest() {
-        initTasks();
-        assertTrue(taskManager.validateTasks());
-        LocalDateTime now = LocalDateTime.parse("2022-09-28T23:41:00.625776801");
-        Task task = new Task("Задача 4", "Создать задачу 4", now, 20);
-        task.setid(4);
-        taskManager.addTask(task);
-        assertFalse(taskManager.validateTasks());
     }
 }

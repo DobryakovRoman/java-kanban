@@ -1,17 +1,28 @@
 package Kanban.service;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
 import Kanban.constants.Status;
-import Kanban.task.*;
+import Kanban.task.Epic;
+import Kanban.task.Subtask;
+import Kanban.task.Task;
+
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     protected int taskid;
     protected Map<Integer, Task> tasks = new HashMap<>();
     protected Map<Integer, Epic> epics = new HashMap<>();
     protected Map<Integer, Subtask> subtasks = new HashMap<>();
-    protected Set<Task> everyTask = new TreeSet<>((Task o1, Task o2) -> o1.getStartTime().compareTo(o2.getStartTime()));
+    protected Set<Task> everyTask = new TreeSet<>((Task o1, Task o2) -> {
+        if ((o1.getStartTime() == null) && (o2.getStartTime() != null)) {
+            return 1;
+        } else if ((o1.getStartTime() != null) && (o2.getStartTime() == null))  {
+            return -1;
+        } else if ((o1.getStartTime() == null) && (o2.getStartTime() == null))  {
+            return 0;
+        } else {
+            return o1.getStartTime().compareTo(o2.getStartTime());
+        }
+    });
     protected HistoryManager<Task> history = Managers.getDefaultHistory();
 
     public InMemoryTaskManager() {
@@ -20,6 +31,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addTask(Task task) {
+        validateTask(task);
         task.setid(++taskid);
         tasks.put(task.getid(), task);
         everyTask.add(task);
@@ -33,6 +45,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
+        validateTask(task);
         if (tasks.containsKey(task.getid())) {
             tasks.replace(task.getid(), task);
         }
@@ -56,7 +69,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void addEpic(Epic epic) {
         epic.setid(++taskid);
         epics.put(taskid, epic);
-        everyTask.add(epic);
     }
 
     @Override
@@ -108,6 +120,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addSubtask(Subtask subtask) {
+        validateTask(subtask);
         subtask.setid(++taskid);
         subtasks.put(taskid, subtask);
         epics.get(subtask.getEpicid()).addSubtask(subtask);
@@ -132,11 +145,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(Subtask subtask) {
+        validateTask(subtask);
         if (subtasks.containsKey(subtask.getid())) {
             Subtask tempSubtask = subtasks.get(subtask.getid());
             tempSubtask.setTitle(subtask.getTitle());
             tempSubtask.setDescription(subtask.getDescription());
             tempSubtask.setStatus(subtask.getStatus());
+            tempSubtask.setStartTime(subtask.getStartTime());
+            tempSubtask.setDuration(subtask.getDuration());
             updateEpicStatus(epics.get(subtask.getEpicid()));
         }
     }
@@ -198,18 +214,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public boolean validateTasks() {
-        ArrayList<Task> prioritizedTasks = (ArrayList<Task>) getPrioritizedTasks();
-        Task currentTask = prioritizedTasks.get(0);
-        for (int i = 1; i < prioritizedTasks.size(); i++) {
-            if (currentTask.getEndTime().isAfter(prioritizedTasks.get(i).getStartTime())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(everyTask);
     }
@@ -217,6 +221,26 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return new ArrayList<>(history.getHistory());
+    }
+
+    private void validateTask(Task task) {
+        if (task.getStartTime() == null || task.getEndTime() == null) {
+            return;
+        }
+        ArrayList<Task> prioritizedTasks = (ArrayList<Task>) getPrioritizedTasks();
+        for (Task prioritizedTask : prioritizedTasks) {
+            if (prioritizedTask.getStartTime() == null) {
+                return;
+            }
+            if (task.getEndTime().isAfter(prioritizedTask.getStartTime()) &&
+                    task.getStartTime().isBefore(prioritizedTask.getStartTime())) {
+                throw new RuntimeException("Задачи пересекаются!");
+            }
+            if (task.getStartTime().isBefore(prioritizedTask.getEndTime()) &&
+                    task.getEndTime().isAfter(prioritizedTask.getEndTime())) {
+                throw new RuntimeException("Задачи пересекаются!");
+            }
+        }
     }
 
     private void updateEpicStatus(Epic epic) {
