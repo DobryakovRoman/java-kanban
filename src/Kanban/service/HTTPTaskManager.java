@@ -32,10 +32,12 @@ public class HTTPTaskManager extends FileBackedTaskManager {
             subtasks = gson.fromJson(jsonSubTasks, new TypeToken<HashMap<Integer, Subtask>>(){}.getType());
 
             List<Integer> history = gson.fromJson(jsonHistory, new TypeToken<List<Integer>>(){}.getType());
-            for (Integer id : history) {
-                if (getTaskById(id) == null) {
-                    if (getEpicById(id) == null) {
-                        getSubtaskByid(id);
+            if (history != null) {
+                for (Integer id : history) {
+                    if (getTaskById(id) == null) {
+                        if (getEpicById(id) == null) {
+                            getSubtaskByid(id);
+                        }
                     }
                 }
             }

@@ -44,7 +44,6 @@ public class HTTPTest {
         assertEquals(201, response.statusCode());
     }
 
-
     @AfterEach
     void afterEach() throws IOException {
         kvServer.stop();

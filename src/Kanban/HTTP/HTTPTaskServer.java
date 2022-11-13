@@ -28,6 +28,7 @@ public class HTTPTaskServer {
     private static final int PORT = 8080;
 
     public HTTPTaskServer() throws IOException {
+        manager.load();
         httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.createContext("/tasks", new TaskHandler());
     }
