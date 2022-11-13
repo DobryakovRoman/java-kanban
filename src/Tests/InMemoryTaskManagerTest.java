@@ -24,9 +24,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
         taskManager  = new InMemoryTaskManager();
     }
 
-
-
-
     @Test
     void addTaskAndGetTasksAndGetTaskByIdTest() {
         assertEquals(new ArrayList<Task>(), taskManager.getTasks());

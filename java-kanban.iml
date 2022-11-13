@@ -71,5 +71,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="gson-2.9.0" level="application" />
   </component>
 </module>

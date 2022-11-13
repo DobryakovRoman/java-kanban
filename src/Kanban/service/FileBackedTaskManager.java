@@ -19,11 +19,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     protected final Path path;
 
     public FileBackedTaskManager(File file) {
-        path = file.toPath();
-        load(path);
+        if (file != null) {
+            path = file.toPath();
+            load(path);
+        } else {
+            path = null;
+        }
     }
 
-    private void load(Path path) {
+    public void load(Path path) {
         if (Files.exists(path)) {
             try (FileReader reader = new FileReader(path.toFile());
                  BufferedReader br = new BufferedReader(reader)) {
@@ -171,7 +175,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    private void save() {
+    protected void save() {
         try (Writer writer = new FileWriter(path.toString())) {
             if (Files.exists(Paths.get(path.toString()))) {
                 writer.write("id,type,name,status,description,duration,startTime,epic\n");
