@@ -44,7 +44,7 @@ public class HTTPTaskServer {
 
     class TaskHandler implements HttpHandler {
         @Override
-        public void handle(HttpExchange httpExchange) throws IOException {
+        public void handle(HttpExchange httpExchange) {
             try {
                 String path = httpExchange.getRequestURI().getPath();
                 String requestMethod = httpExchange.getRequestMethod();
@@ -94,8 +94,6 @@ public class HTTPTaskServer {
                             id = Integer.parseInt(splitId[splitId.length - 1]);
                             String subTaskJson = gson.toJson(manager.getSubtaskByid(id));
                             sendText(httpExchange, subTaskJson);
-                        } else {
-                            sendError(httpExchange, "Ошибка в пути GET");
                         }
                         break;
                     }
@@ -180,9 +178,6 @@ public class HTTPTaskServer {
                             break;
                         }
                     }
-                    default:
-                        sendError(httpExchange, "Ошибка запроса");
-                        break;
                 }
 
             } catch (Exception e) {
@@ -197,13 +192,6 @@ public class HTTPTaskServer {
         byte[] resp = text.getBytes(DEFAULT_CHARSET);
         h.getResponseHeaders().add("Content-Type", "application/json");
         h.sendResponseHeaders(200, resp.length);
-        h.getResponseBody().write(resp);
-    }
-
-    private void sendError(HttpExchange h, String text) throws IOException {
-        byte[] resp = text.getBytes(DEFAULT_CHARSET);
-        h.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
-        h.sendResponseHeaders(400, resp.length);
         h.getResponseBody().write(resp);
     }
 

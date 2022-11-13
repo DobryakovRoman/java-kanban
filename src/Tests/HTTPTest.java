@@ -14,7 +14,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HTTPTest {
 
@@ -45,7 +46,7 @@ public class HTTPTest {
     }
 
     @AfterEach
-    void afterEach() throws IOException {
+    void afterEach() {
         kvServer.stop();
         httpTaskServer.stop();
     }

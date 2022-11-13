@@ -41,6 +41,15 @@ public class HTTPTaskManager extends FileBackedTaskManager {
                     }
                 }
             }
+            if (tasks == null) {
+                tasks = new HashMap<>();
+            }
+            if (epics == null) {
+                epics = new HashMap<>();
+            }
+            if (subtasks == null) {
+                subtasks = new HashMap<>();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

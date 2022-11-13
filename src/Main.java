@@ -10,7 +10,6 @@ public class Main {
             new KVServer().start();
             new HTTPTaskServer().start();
 
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
