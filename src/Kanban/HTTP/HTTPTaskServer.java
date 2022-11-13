@@ -52,9 +52,8 @@ public class HTTPTaskServer {
                 String[] endPoints = path.split("/");
                 int endPointsCount = endPoints.length;
                 int id = 0;
-                String[] splitId = new String[]{""};
                 if (query != null) {
-                    splitId = query.split("=");
+                    String[] splitId = query.split("=");
                     id = Integer.parseInt(splitId[splitId.length - 1]);
                 }
 
@@ -81,17 +80,14 @@ public class HTTPTaskServer {
                             sendText(httpExchange, historyJson);
                         }
                         if (endPoints[endPoints.length - 1].equals("task") && (query != null)) {
-
                             String taskJson = gson.toJson(manager.getTaskById(id));
                             sendText(httpExchange, taskJson);
                         }
                         if (endPoints[endPoints.length - 1].equals("epic") && (query != null)) {
-                            id = Integer.parseInt(splitId[splitId.length - 1]);
                             String epicJson = gson.toJson(manager.getEpicById(id));
                             sendText(httpExchange, epicJson);
                         }
                         if (endPoints[endPoints.length - 1].equals("subtask") && (query != null)) {
-                            id = Integer.parseInt(splitId[splitId.length - 1]);
                             String subTaskJson = gson.toJson(manager.getSubtaskByid(id));
                             sendText(httpExchange, subTaskJson);
                         }
@@ -160,26 +156,22 @@ public class HTTPTaskServer {
                             break;
                         }
                         if (endPoints[endPoints.length - 1].equals("task") && (query != null)) {
-                            id = Integer.parseInt(splitId[splitId.length - 1]);
                             manager.removeTask(id);
                             httpExchange.sendResponseHeaders(200, 0);
                             break;
                         }
                         if (endPoints[endPoints.length - 1].equals("epic") && (query != null)) {
-                            id = Integer.parseInt(splitId[splitId.length - 1]);
                             manager.removeEpic(id);
                             httpExchange.sendResponseHeaders(200, 0);
                             break;
                         }
                         if (endPoints[endPoints.length - 1].equals("Subtask") && (query != null)) {
-                            id = Integer.parseInt(splitId[splitId.length - 1]);
                             manager.removeSubtask(id);
                             httpExchange.sendResponseHeaders(200, 0);
                             break;
                         }
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
