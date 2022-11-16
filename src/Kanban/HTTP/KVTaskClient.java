@@ -38,11 +38,11 @@ public class KVTaskClient {
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
             HttpResponse<String> send = httpClient.send(build, HttpResponse.BodyHandlers.ofString());
-            if(send.statusCode() != 200) {
+            if (send.statusCode() != 200) {
                 throw new RuntimeException("Во время сохранения на сервер произошла ошибка");
             }
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Во время сохранения на сервер произошла ошибка " + e.getMessage());
         }
     }
 
@@ -55,6 +55,9 @@ public class KVTaskClient {
                     .build();
             HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
             HttpResponse<String> response = client.send(request, handler);
+            if (response.statusCode() != 200 && response.statusCode() != 400) {
+                throw new RuntimeException("Во время получения данных с сервера произошла ошибка");
+            }
             return response.body();
 
         } catch (InterruptedException | IOException e) {

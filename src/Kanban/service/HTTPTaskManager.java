@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HTTPTaskManager extends FileBackedTaskManager {
-    KVTaskClient kvTaskClient = new KVTaskClient();
-    Gson gson = Managers.getGson();
+    private KVTaskClient kvTaskClient = new KVTaskClient();
+    private Gson gson = Managers.getGson();
 
     public HTTPTaskManager() {
         super(null);
@@ -51,7 +51,7 @@ public class HTTPTaskManager extends FileBackedTaskManager {
                 subtasks = new HashMap<>();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Возникла ошибка при получении данных с KVServer");
         }
     }
 

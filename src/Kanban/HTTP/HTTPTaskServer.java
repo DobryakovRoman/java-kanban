@@ -17,7 +17,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class HTTPTaskServer {
 
-    HTTPTaskManager manager = new HTTPTaskManager();
+    private HTTPTaskManager manager = new HTTPTaskManager();
 
     private final Gson gson = new GsonBuilder()
             .serializeNulls()
